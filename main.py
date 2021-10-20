@@ -105,7 +105,7 @@ def test_lista_superprime():
 
 def cmmdc(nr1,nr2):
     while nr1!=nr2:
-        if nr1>nr2:
+        if nr1 > nr2:
             nr1=nr1-nr2
         else:
             nr2=nr2-nr1
@@ -117,15 +117,17 @@ def cmmdc_lista(l):
     :param l: o lista de numere intregi
     :return divizor: returneaza cmmdc-ul tuturor numerelor din l
     """
+    divizor=min(l)
     if len(l) == 1:
-        return l[0]
+        divizor = l[0]
     elif len(l) == 2:
-        return cmmdc(l[0],l[1])
+        divizor=cmmdc(l[0],l[1])
     else:
         divizor == cmmdc(l[0],l[1])
         for i in range(2,len(l)):
-            divizor=cmmdc(divizor,l[i])
-        return divizor
+            divizor_intermediar=cmmdc(divizor,l[i])
+            divizor=divizor_intermediar
+    return divizor
 
 
 def modificare_dupa_semn(l):
@@ -153,6 +155,7 @@ def modificare_dupa_semn(l):
 def test_modificare_dupa_semn():
     assert modificare_dupa_semn([4,-12,-5]) == [4,-21,-5]
     assert modificare_dupa_semn([-32,12,24]) == [-23,12,12]
+    assert modificare_dupa_semn([12,24,144]) == [12,12,12]
 
 
 def print_menu():
