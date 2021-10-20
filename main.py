@@ -35,6 +35,57 @@ def test_nr_minim_cifra_data():
     assert nr_minim_cifra_data([2,4,5], 1) == None
 
 
+
+def verificare_prim(n):
+    '''
+    -determina daca un numar dat n este prim sau nu
+    Input:
+    -parametru: n (de tip intreg)
+    Output:
+    -va returna True, daca n este prim, sau False, in caz contrar(de tip bool)
+    '''
+    if n <= 1:
+        return False
+    if n == 2:
+        return True
+    if n % 2 == 0:
+        return False
+    for i in range(3, n//2+1, 2):
+        if n%i == 0:
+            return False
+    return True
+
+
+def is_superprime(n):
+    ''''
+    -deteremina daca un numar este superprim sau nu
+    Input:
+    -parametru: n (de tip intreg)
+    Output:
+    -va returna True, daca n este superprim, sau False, in caz contrar(de tip bool)
+    '''
+    copie = n
+    verificare = 1
+    #presupunem ca numarul dat este superprim
+    while copie:
+        if not verificare_prim(copie):
+            verificare=0
+            break
+        copie=copie//10
+    if verificare==1:
+        return True
+    return False
+
+def lista_superprime(l):
+    superprime=[nr for nr in l if nr>0 and is_superprime(nr)]
+    return superprime
+
+def test_lista_superprime():
+    assert lista_superprime([1,13,14]) == []
+    assert lista_superprime([239,23,14]) == [239,23]
+    assert lista_superprime([14,173,3]) == [3]
+
+
 def print_menu():
     print("1. Citire lista.")
     print("2. Afișarea tuturor numerelor negative nenule din listă.")
@@ -49,6 +100,7 @@ def print_menu():
 def main():
     test_nr_negative_nenule()
     test_nr_minim_cifra_data()
+    test_lista_superprime()
     while True:
         print_menu()
         optiune=input("Dati optiunea:")
@@ -62,6 +114,8 @@ def main():
         elif optiune == "3":
             cifra=int(input("Dati cifra:"))
             print(nr_minim_cifra_data(lista,cifra))
+        elif optiune == "4":
+            print(lista_superprime(lista))
         elif optiune == "x":
             print("Meniul se va inchide.")
             break
