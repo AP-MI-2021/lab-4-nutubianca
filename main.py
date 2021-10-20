@@ -5,6 +5,11 @@ def citire(lista):
     return lista
 
 def nr_negative_nenule(l):
+    """
+    -afiseaza toate numerele negative nenule din lista
+    :param l: lista data de numere intregi
+    :return negative: lista de numere negatice cerute din l
+    """
     negative=[]
     for x in l:
         if x<0:
@@ -18,6 +23,13 @@ def test_nr_negative_nenule():
 
 
 def nr_minim_cifra_data(l,cifra):
+    """
+    -gaseste cel mai mic numar ce are ca ultima cifra cifra data de utilizator
+    :param l: lista de numere intregi
+    :param cifra: cifra data de utilizator, de tip intreg
+    :return nr_minim: returneaza valoarea ceruta; daca nu
+    se gaseste niciun numar valabil,se returneaza None
+    """
     nr_minim=None
     for x in l:
         if x%10==cifra or -x%10==cifra:
@@ -77,6 +89,11 @@ def is_superprime(n):
     return False
 
 def lista_superprime(l):
+    """
+    -determina ce numere sunt supeprime din lista data
+    :param l: lista de numere intregi
+    :return superprime: lista cu numerele din lista l care sunt supeprime
+    """
     superprime=[nr for nr in l if nr>0 and is_superprime(nr)]
     return superprime
 
@@ -84,6 +101,58 @@ def test_lista_superprime():
     assert lista_superprime([1,13,14]) == []
     assert lista_superprime([239,23,14]) == [239,23]
     assert lista_superprime([14,173,3]) == [3]
+
+
+def cmmdc(nr1,nr2):
+    while nr1!=nr2:
+        if nr1>nr2:
+            nr1=nr1-nr2
+        else:
+            nr2=nr2-nr1
+    return nr1
+
+def cmmdc_lista(l):
+    """
+    -determina cmmdc-ul dintr-o lista data
+    :param l: o lista de numere intregi
+    :return divizor: returneaza cmmdc-ul tuturor numerelor din l
+    """
+    if len(l) == 1:
+        return l[0]
+    elif len(l) == 2:
+        return cmmdc(l[0],l[1])
+    else:
+        divizor == cmmdc(l[0],l[1])
+        for i in range(2,len(l)):
+            divizor=cmmdc(divizor,l[i])
+        return divizor
+
+
+def modificare_dupa_semn(l):
+    """
+    -determina lista obținuta din lista inițială în care numerele pozitive și nenule au fost înlocuite cu
+    CMMDC-ul lor și numerele negative au cifrele în ordine inversă.
+    :param l: o lista de numere intregi
+    :return lista_noua: o lista modificata conform cerintei
+    """
+    lista_pozitive = [nr for nr in l if nr > 0]
+    inlocuire_pozitive=cmmdc_lista(lista_pozitive)
+    lista_noua=[]
+    for x in l:
+        if x>0:
+            lista_noua.append(inlocuire_pozitive)
+        elif x == 0:
+            lista_noua.append(x)
+        else:
+            negativ= x*(-1)
+            negativ="-"+str(negativ)[::-1]
+            negativ=int(negativ)
+            lista_noua.append(negativ)
+    return lista_noua
+
+def test_modificare_dupa_semn():
+    assert modificare_dupa_semn([4,-12,-5]) == [4,-21,-5]
+    assert modificare_dupa_semn([-32,12,24]) == [-23,12,12]
 
 
 def print_menu():
@@ -101,6 +170,7 @@ def main():
     test_nr_negative_nenule()
     test_nr_minim_cifra_data()
     test_lista_superprime()
+    test_modificare_dupa_semn()
     while True:
         print_menu()
         optiune=input("Dati optiunea:")
@@ -116,6 +186,8 @@ def main():
             print(nr_minim_cifra_data(lista,cifra))
         elif optiune == "4":
             print(lista_superprime(lista))
+        elif optiune == "5":
+            print(modificare_dupa_semn(lista))
         elif optiune == "x":
             print("Meniul se va inchide.")
             break
